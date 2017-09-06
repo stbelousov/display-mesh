@@ -74,9 +74,9 @@ void Facet::draw(QPainter &p) const
 void Facet::scale(double value)
 {
     QMatrix4x4 matr = QMatrix4x4(value, 0, 0, 0,
-                                  0, value, 0, 0,
-                                  0, 0, value, 0,
-                                  0, 0, 0, 1);
+                                 0, value, 0, 0,
+                                 0, 0, value, 0,
+                                 0, 0, 0, 1);
    
     transform(matr);
 }
