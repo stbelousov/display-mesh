@@ -80,9 +80,6 @@ void Viewer::createMesh() {
         regions[i] = QString::fromUtf8(region.c_str());
         in >> sizes[i];
 	}
-    int tmp1;
-    double tmp2;
-    in >> tmp1;
     for (int i = 0;i < n;i++) {
         for (int j = 0;j < sizes[i];j++) {
             QVector4D a, b, c, normal;
@@ -106,7 +103,7 @@ void Viewer::createMesh() {
             in >> x >> y >> z;
             normal = QVector4D(x, y, z, 0);
             
-            in >> temperature >> tmp2;
+            in >> temperature;
             mesh.push_back(Facet(a, b, c, normal, colors[i % colors.size()], temperature));
             min_temperature = std::min(min_temperature, temperature);
             max_temperature = std::max(max_temperature, temperature);
