@@ -1,23 +1,28 @@
-# display-mesh
-GUI-приложение на Qt, отображающее трехмерные геометрические фигуры, заданные в виде сетки из треугольников, координаты которых записаны в файле (в качестве примера см. sample.input, также этот файл следует выбрать при запуске приложения). Вращать фигуру можно при помощи зажатой левой кнопки мыши.
+# Description
+A desktop GUI application for 3D objects visualization.  
+Each 3D object is described in the input file (e.g., sample.input) as a mesh of triangular facets.  
+Each facet may also contain temperature, which is visualized as well.
 
+The implementation is based on the Qt widget toolkit.
 
-Формат файла sample.input:
+Press and hold the left mouse button to rotate the scene.
 
-число_фигур
+# Input format
 
-"общее_название_фигур" "название_конкретной_фигуры" число_треугольников
+number_of_objects
+
+"scene_name" "object_name" number_of_facets
 
 ...
 
-координаты_первой_вершины_треугольника
+facet_first_vertex_coordinates
 
-координаты_второй_вершины_треугольника
+facet_second_vertex_coordinates
 
-координаты_третьей_вершины_треугольника
+facet_third_vertex_coordinates
 
-координаты_нормали_к_треугольнику
+facet_normal_coordinates
 
-температура_треугольника
+facet_temperature
 
 ...

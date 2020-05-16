@@ -49,10 +49,10 @@ void Viewer::drawLine(const QVector4D & A, const QVector4D & B, QPainter & p) {
 }
 
 void Viewer::createMesh() {
-    QString filename = QFileDialog::getOpenFileName(0, QString::fromUtf8("Открыть файл"), QDir::currentPath(), "Input (*.input)");
+    QString filename = QFileDialog::getOpenFileName(0, QString::fromUtf8("Open File"), QDir::currentPath(), "Input (*.input)");
     std::ifstream in(filename.toStdString().c_str());
     if (!in) {
-        QMessageBox::information(0, QString::fromUtf8("Ошибка"), QString::fromUtf8("Не выбран входной файл."));
+        QMessageBox::information(0, QString::fromUtf8("Error"), QString::fromUtf8("No file selected."));
         exit(1);
     }
     
@@ -177,7 +177,7 @@ void Viewer::drawLegendTemperature(QPainter &p) {
     p.setFont(f);
     p.setPen(QPen(Qt::black));
     QString str;
-    p.drawText(startx, starty - 2, QString::fromUtf8("Температура:"));
+    p.drawText(startx, starty - 2, QString::fromUtf8("Temperature:"));
     p.drawText(startx - 5, starty + width + 11, str.sprintf("%6.2lf", min_temperature));
     p.drawText(startx + length - 40, starty + width + 11, str.sprintf("%6.2lf", max_temperature));
 }
