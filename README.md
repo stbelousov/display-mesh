@@ -3,7 +3,8 @@ A desktop GUI application for 3D objects visualization.
 Each 3D object is described in the input file (e.g., sample.input) as a mesh of triangular facets.  
 Each facet may also contain temperature, which is visualized as well.
 
-The implementation is based on the Qt widget toolkit.
+The implementation is based on the Qt widget toolkit.  
+A few screenshots are provided in the "example" folder.
 
 Press and hold the left mouse button to rotate the scene.
 
