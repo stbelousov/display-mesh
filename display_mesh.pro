@@ -1,6 +1,6 @@
 QT       += core gui
 
-TARGET = display_mesh
+TARGET = mesh_visualizer
 TEMPLATE = app
 
 SOURCES += main.cpp\
