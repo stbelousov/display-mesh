@@ -45,7 +45,7 @@ Viewer::~Viewer() {
 }
 
 void Viewer::drawLine(const QVector4D & A, const QVector4D & B, QPainter & p) {
-	p.drawLine(A.x() / A.w(), A.y() / A.w(), B.x() / B.w(), B.y() / B.w());
+    p.drawLine(A.x() / A.w(), A.y() / A.w(), B.x() / B.w(), B.y() / B.w());
 }
 
 void Viewer::createMesh() {
@@ -79,7 +79,7 @@ void Viewer::createMesh() {
         files[i] = QString::fromUtf8(file.c_str());
         regions[i] = QString::fromUtf8(region.c_str());
         in >> sizes[i];
-	}
+    }
     for (int i = 0;i < n;i++) {
         for (int j = 0;j < sizes[i];j++) {
             QVector4D a, b, c, normal;
