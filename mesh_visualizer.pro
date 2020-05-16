@@ -1,4 +1,4 @@
-QT += core gui
+QT += core gui widgets
 
 TARGET = mesh_visualizer
 TEMPLATE = app

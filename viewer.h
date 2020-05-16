@@ -14,8 +14,8 @@ class Viewer : public QWidget
 {
     Q_OBJECT
 
-    static const double eps = 1e-8;
-    static const double inf = 1e18;
+    static constexpr double eps = 1e-8;
+    static constexpr double inf = 1e18;
 
 public:
     bool mark_regions, display_normals;
@@ -30,7 +30,7 @@ public:
     QVector < QString > files, regions;
     QVector < int > sizes;
 
-    explicit Viewer(QWidget *parent = 0);
+    explicit Viewer(QWidget *parent = nullptr);
     ~Viewer();
 
     void paintEvent(QPaintEvent *);
