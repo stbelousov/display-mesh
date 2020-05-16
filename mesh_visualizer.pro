@@ -1,12 +1,12 @@
-QT       += core gui
+QT += core gui
 
 TARGET = mesh_visualizer
 TEMPLATE = app
 
-SOURCES += main.cpp\
-        widget.cpp \
-        viewer.cpp \
-        facet.cpp
+SOURCES +=  main.cpp\
+            widget.cpp \
+            viewer.cpp \
+            facet.cpp
 
 HEADERS  += widget.h \
             viewer.h \
