@@ -9,7 +9,7 @@ Widget::~Widget() {
     delete ui;
 }
 
-void Widget::on_closeButton_clicked() 
+void Widget::on_closeButton_clicked()
 {
     this->close();
 }

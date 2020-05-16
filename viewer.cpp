@@ -16,27 +16,27 @@
 
 Viewer::Viewer(QWidget *parent): QWidget(parent), ui(new Ui::Viewer) {
     ui->setupUi(this);
-    
+
     QPalette pal = this->palette();
     pal.setColor(QPalette::Window, Qt::white);
     this->setPalette(pal);
     this->setAutoFillBackground(true);
-    
+
     orientation.setToIdentity();
     observe_point = QVector3D(0, 6, 0);
     cur_x = cur_y = 0;
     ortho_matrix = createOrthoMatrix();
-    
+
     colors.push_back(Qt::red);
     colors.push_back(Qt::green);
     colors.push_back(Qt::blue);
     colors.push_back(Qt::yellow);
     colors.push_back(Qt::cyan);
     colors.push_back(Qt::magenta);
-    
+
     mark_regions = true;
     display_normals = false;
-    
+
     createMesh();
 }
 
@@ -55,7 +55,7 @@ void Viewer::createMesh() {
         QMessageBox::information(0, QString::fromUtf8("Error"), QString::fromUtf8("No file selected."));
         exit(1);
     }
-    
+
     min_temperature = inf;
     max_temperature = -inf;
     double min_x = inf;
@@ -64,7 +64,7 @@ void Viewer::createMesh() {
     double max_y = -inf;
     double min_z = inf;
     double max_z = -inf;
-    
+
     int n;
     in >> n;
     files.resize(n);
@@ -85,35 +85,35 @@ void Viewer::createMesh() {
             QVector4D a, b, c, normal;
             double temperature;
             double x, y, z;
-            
+
             in >> x >> y >> z;
             a = QVector4D(x, y, z, 1);
             in >> x >> y >> z;
             b = QVector4D(x, y, z, 1);
             in >> x >> y >> z;
             c = QVector4D(x, y, z, 1);
-            
+
             min_x = std::min(min_x, x);
             max_x = std::max(max_x, x);
             min_y = std::min(min_y, y);
             max_y = std::max(max_y, y);
             min_z = std::min(min_z, z);
             max_z = std::max(max_z, z);
-            
+
             in >> x >> y >> z;
             normal = QVector4D(x, y, z, 0);
-            
+
             in >> temperature;
             mesh.push_back(Facet(a, b, c, normal, colors[i % colors.size()], temperature));
             min_temperature = std::min(min_temperature, temperature);
             max_temperature = std::max(max_temperature, temperature);
         }
     }
-    
+
     double dx = max_x - min_x;
     double dy = max_y - min_y;
     double dz = max_z - min_z;
-    
+
     double scale = 3.0 / std::max(dx, std::max(dy, dz));
     for (int i = 0;i < mesh.size();i++) {
         mesh[i].scale(scale);
@@ -126,17 +126,17 @@ void Viewer::drawAxis(const QMatrix4x4 &matr, QPainter &p) {
     QVector4D x1(length, 0, 0, 1);
     QVector4D y1(0, length, 0, 1);
     QVector4D z1(0, 0, length, 1);
-    
+
     zero = matr * zero;
     x1 = matr * x1;
     y1 = matr * y1;
     z1 = matr * z1;
-    
+
     p.setPen(QPen(Qt::black));
     drawLine(zero, x1, p);
     drawLine(zero, y1, p);
     drawLine(zero, z1, p);
-    
+
     QFont f;
     f.setPointSize(12);
     p.setFont(f);
@@ -157,7 +157,7 @@ void Viewer::drawLegendRegions(QPainter &p) {
         arr[2] = QPointF(startx + 10, starty - 10);
         arr[3] = QPointF(startx + 10, starty);
         p.drawConvexPolygon(arr, 4);
-        p.setPen(QPen(Qt::black));      
+        p.setPen(QPen(Qt::black));
         p.drawText(startx + 14, starty, files[i] + " " + regions[i]);
         starty -= 20;
     }
@@ -171,7 +171,7 @@ void Viewer::drawLegendTemperature(QPainter &p) {
         p.setPen(QPen(QColor(i, 50, 255 - i)));
         p.drawLine(startx + i, starty, startx + i, starty + width);
     }
-    
+
     QFont f;
     f.setPointSize(10);
     p.setFont(f);
@@ -182,16 +182,16 @@ void Viewer::drawLegendTemperature(QPainter &p) {
     p.drawText(startx + length - 40, starty + width + 11, str.sprintf("%6.2lf", max_temperature));
 }
 
-void Viewer::drawObject(const QVector < Facet > &facets, QPainter &p) {    
+void Viewer::drawObject(const QVector < Facet > &facets, QPainter &p) {
     for (int i = 0;i < facets.size();i++) {
         const Facet& f = facets[i];
-        
+
         if (f.isNormal()) {
             p.setPen(QPen(Qt::black));
             f.draw(p);
             continue;
         }
-        
+
         QColor color;
         if (mark_regions) {
             color = f.getColor();
@@ -211,21 +211,21 @@ QMatrix4x4 Viewer::createOrthoMatrix() {
     QVector3D top = QVector3D(0, 0, 1);
     QVector3D newx = QVector3D::crossProduct(newz, top).normalized();
     QVector3D newy = QVector3D::crossProduct(newz, newx).normalized();
-    
+
     QMatrix4x4 result = QMatrix4x4(newx.x(), newy.x(), newz.x(), 0,
                                    newx.y(), newy.y(), newz.y(), 0,
                                    newx.z(), newy.z(), newz.z(), 0,
                                    0, 0, 0, 1);
-    
+
     return result.inverted();
 }
 
 void Viewer::paintEvent(QPaintEvent *) {
     QPainter p(this);
-    
+
     double scale = 0.2 * std::min(this->width(), this->height());
     QMatrix4x4 axis_matrix, mesh_scene_matrix, mesh_viewport_matrix;
-    
+
     axis_matrix = QMatrix4x4(scale, 0, 0, this->width() - 0.8 * scale,
                              0, scale, 0, this->height() - 0.8 * scale,
                              0, 0, 0, 0,
@@ -235,14 +235,14 @@ void Viewer::paintEvent(QPaintEvent *) {
                                       0, 0, 0, 0,
                                       0, 0, 0, 1);
     mesh_scene_matrix = ortho_matrix * orientation;
-    
+
     QVector < Facet > to_draw = mesh;
     if (display_normals) {
         for (int i = 0;i < mesh.size();i++) {
             to_draw.push_back(mesh[i].getNormal());
         }
     }
-    
+
     for (int i = 0;i < to_draw.size();i++) {
         to_draw[i].transform(mesh_scene_matrix);
     }
@@ -250,11 +250,11 @@ void Viewer::paintEvent(QPaintEvent *) {
     for (int i = 0;i < to_draw.size();i++) {
         to_draw[i].transform(mesh_viewport_matrix);
     }
-    
+
     drawObject(to_draw, p);
-    
+
     drawAxis(mesh_viewport_matrix * mesh_scene_matrix, p);
-    
+
     if (mark_regions) {
         drawLegendRegions(p);
     } else {
@@ -267,7 +267,7 @@ void Viewer::mouseMoveEvent(QMouseEvent *e) {
     double dy = e->y() - cur_y;
     cur_x = e->x();
     cur_y = e->y();
-    
+
     QMatrix4x4 matr_dy = QMatrix4x4(1, 0, 0, 0,
                                     0, cos(dy * 0.01), -sin(dy * 0.01), 0,
                                     0, sin(dy * 0.01), cos(dy * 0.01), 0,
@@ -277,7 +277,7 @@ void Viewer::mouseMoveEvent(QMouseEvent *e) {
                                     0, 0, 1, 0,
                                     0, 0, 0, 1);
     orientation = matr_dx * matr_dy * orientation;
-    
+
     update();
 }
 

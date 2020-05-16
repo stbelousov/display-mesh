@@ -26,7 +26,7 @@ public:
     bool isNormal() const;
     void draw(QPainter &p) const;
     void scale(double value);
-    
+
     bool operator<(const Facet &t) const;
 };
 
