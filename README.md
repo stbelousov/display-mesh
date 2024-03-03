@@ -1,3 +1,7 @@
+![example1](https://github.com/stbelousov/mesh-visualizer/assets/3650015/bf5d15f3-89fc-46e0-8c3a-f80b3d4967ac)
+
+![example2](https://github.com/stbelousov/mesh-visualizer/assets/3650015/12873aa2-8dd6-43a0-b376-7dea957ccf73)
+
 # Description
 A desktop GUI application for 3D objects visualization.  
 Each 3D object is described in the input file (e.g., sample.input) as a mesh of triangular facets.  
